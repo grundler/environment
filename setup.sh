@@ -28,7 +28,7 @@ function setfile {
 FILE=common_imports.py
 setfile $PWD/ipython/$FILE $HOME/.ipython/profile_default/startup/$FILE
 
-declare -a HOMEFILES=(bashrc vimrc inputrc)
+declare -a HOMEFILES=(bashrc vimrc inputrc gitconfig)
 for FILE in "${HOMEFILES[@]}"; do
     setfile $PWD/$FILE $HOME/.$FILE
 done
