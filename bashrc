@@ -32,5 +32,7 @@ lless()
 # \w - full path
 # \W - tail of path
 # \[\033[XXm\] - set color
-TITLEBAR='\[\e]0;\u@\H:\w\a\]'
-PS1="${TITLEBAR}\[\033[36m\]\u@\H \[\033[32m\]\W >\[\033[00m\] "
+
+#TITLEBAR='\[\e]0;\u@\H:\w\a\]'
+#PS1="${TITLEBAR}\[\033[36m\]\u@\H \[\033[32m\]\W >\[\033[00m\] "
+PS1="\[\033[36m\]\u@\H \[\033[32m\]\W\[\033[36m\] >\[\033[00m\] "
