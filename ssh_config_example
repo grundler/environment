@@ -1,0 +1,49 @@
+Host *
+    # send a regular signal so connection doesn't die
+    ServerAliveInterval 120
+    # only send signal so many times
+    ServerAliveCountMax 1500
+Host github.com other.com
+    IdentityFile ~/.ssh/my.rsa
+
+Host bastion* qa
+    User myuser
+
+# this host is mainly just to get somewhere else
+Host bastion-qa
+    HostName bastion-01.qa.other.com
+    # forward mysql to local port 3307 (bumped into things when going to 3306)
+    # can then do somethin like 'ssh -f bastion-qa sleep 90'
+    #   and 'mysql -h 127.0.0.1 -P 3307 -u user -ppass db'
+    LocalForward 3307 oltp-master.qa.other.internal:3306
+    # be able to use identity file on remote machine too
+    #   like, I can use the same identity file to get to github from remote
+    ForwardAgent yes
+
+# this would be the real target
+Host qa
+    HostName %h-quant-01.%h.other.internal
+    # connect to this host via proxy host
+    ProxyJump bastion-qa
+    ForwardAgent yes
+
+# go straight into docker container on host
+Host qac
+    HostName qa-quant-01.qa.other.internal
+    User myuser
+    ProxyJump bastion-qa
+    # need a tty device
+    RequestTTY yes
+    # run this command when logging in
+    RemoteCommand sudo docker exec -it quant /bin/bash
+
+# give memorable aliases to host with only IP address
+Host mumak1*
+    HostName 54.321.243.284
+# log in as different users by just changing host
+Host mumak?
+    User me
+    IdentityFile ~/.ssh/mumakil.rsa
+Host mumak?ec2
+    User ec2-user
+    IdentityFile ~/.ssh/ecuser.pem

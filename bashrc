@@ -13,7 +13,7 @@ shopt -s histappend
 HISTSIZE=
 HISTFILESIZE=
 
-alias ls='ls -F --color'
+alias ls='ls -F --color=auto'
 alias ll='ls -l'
 alias lh='ll -h'
 alias lt='ls -ltr'
