@@ -14,16 +14,25 @@ HISTSIZE=
 HISTFILESIZE=
 
 alias ls='ls -F --color=auto'
-alias ll='ls -l'
-alias lh='ll -h'
-alias lt='ls -ltr'
+alias ll='ls -lh'
+alias lt='ll -tr'
 alias la='ll -A'
+alias l='ls -l'
 alias vi=vim
 
-#less latest file in directory
+# less latest file in directory
 lless()
 {
 	ls -1dt "$1"/* | head -1 | xargs less
+}
+
+# word diff
+worddiff()
+{
+    # -U0 means no context around different lines
+    # --word-diff option puts [- -]{+ +} around changed words
+    # --no-index means ignore git index, just look at two given paths
+    git diff -U0 --word-diff --no-index $1 $2
 }
 
 # \u - username
