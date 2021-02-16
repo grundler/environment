@@ -28,7 +28,14 @@ function setfile {
 FILE=common_imports.py
 setfile $PWD/ipython/$FILE $HOME/.ipython/profile_default/startup/$FILE
 
-declare -a HOMEFILES=(bashrc vimrc inputrc gitconfig)
+declare -a HOMEFILES=(bash_aliases vimrc inputrc gitconfig tmux.conf)
 for FILE in "${HOMEFILES[@]}"; do
     setfile $PWD/$FILE $HOME/.$FILE
 done
+
+# check if .bashrc calling for bash aliases
+#   probably not perfect
+grep -E "^\s*\.\s+~/\.bash_aliases" $HOME/.bashrc >& /dev/null
+if [ $? -ne 0 ]; then
+    echo "looks like we need to source .bash_aliases in ~/.bashrc"
+fi
