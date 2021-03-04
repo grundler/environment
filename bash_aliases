@@ -31,8 +31,11 @@ log_bash_persistent_history()
     local date_part="${BASH_REMATCH[1]}"
     local command_part="${BASH_REMATCH[2]}"
     case "$command_part" in
-        pwd | l | l[alts] | exit)
+        pwd | l | l[alts] | exit | ipython | vdvsql | snowsql)
             # ignore, we don't need to keep these simple commands
+            ;;
+        "git st" | "git diff" | "git lg")
+            # ignore, don't really care about these, either
             ;;
         "$PERSISTENT_HISTORY_LAST")
             # don't need to keep repeated commands, either
