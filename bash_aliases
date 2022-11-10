@@ -30,12 +30,25 @@ log_bash_persistent_history()
     ]]
     local date_part="${BASH_REMATCH[1]}"
     local command_part="${BASH_REMATCH[2]}"
+    #shopt -s extglob
+    command_part="${command_part##*( )}" # trim leading whitespace
+    command_part="${command_part%%*( )}" # trim trailing whitespace
+    #shopt -u extglob
     case "$command_part" in
-        pwd | l | l[alts] | exit | ipython | vdvsql | snowsql)
+        pwd | l | l[alts] | ps | vi | exit | ipython | vdvsql | snowsql | dpsql)
             # ignore, we don't need to keep these simple commands
             ;;
-        "git st" | "git diff" | "git lg")
+        "git st" | "git diff" | "git lg" | "git log")
             # ignore, don't really care about these, either
+            ;;
+        postgresp | prometheus | copypass\ * | copyppass\ *)
+            # or these
+            ;;
+        tmx | "tmux ls" | "tmux a*")
+            # or simple tmux commands
+            ;;
+        "vi ~/.persistent_history" | "vi ~/.bash_aliases")
+            # or these
             ;;
         "$PERSISTENT_HISTORY_LAST")
             # don't need to keep repeated commands, either
