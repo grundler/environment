@@ -99,6 +99,11 @@ tmx()
         attach
 }
 
+alias tma='tmux attach -t $1'
+if [ -f /etc/bash_completion.d/tma ]; then
+    . /etc/bash_completion.d/tma
+fi
+
 # \u - username
 # \h - hostname up to first '.'
 # \H - full hostname
