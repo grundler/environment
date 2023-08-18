@@ -38,13 +38,13 @@ log_bash_persistent_history()
         pwd | l | l[alts] | ps | vi | exit | ipython | vdvsql | snowsql | dpsql)
             # ignore, we don't need to keep these simple commands
             ;;
-        "git st" | "git diff" | "git lg" | "git log")
+        "git st" | "git diff" | "git lg" | "git log" | "git branch")
             # ignore, don't really care about these, either
             ;;
         postgresp | prometheus | copypass\ * | copyppass\ *)
             # or these
             ;;
-        tmx | "tmux ls" | "tmux a*")
+        tmx | tmx\ * | tma\ * | "tmux ls" | "tmux a*")
             # or simple tmux commands
             ;;
         "vi ~/.persistent_history" | "vi ~/.bash_aliases")
