@@ -104,6 +104,52 @@ if [ -f /etc/bash_completion.d/tma ]; then
     . /etc/bash_completion.d/tma
 fi
 
+copypass()
+{
+    # copy vertica password to clipboard for use elsewhere
+    # $1 - user to get pass for
+    # grep - pull password out of vdvsql
+    # tail - only last line pulled has password
+    # sed - extract password from line
+    # clip.exe - copy to clipboard
+    grep -A2 "$1)" ~/bin/vdvsql \
+        | tail -1 \
+        | sed -rn  "s/^[\t ]*VPASS='(.*)'$/\1/p" \
+        | clip.exe
+}
+
+copyppass()
+{
+    # copy postgres password to clipboard for use elsewhere
+    # $@ - args used by dpsql to connect to user
+    # ~/bin/dpsql dryrun - get the connection information
+    # sed - combine connection information to single string
+    # xargs -ifoo - pass input to grep command (replace foo with input)
+    #   grep finds right line, cut selects fifth element-the password
+    #   clip.exe - copy to clipboard
+    ~/bin/dpsql dryrun "$@" \
+        | sed "s/ /:/g" \
+        | xargs -ifoo grep -m 1 -E "foo:" ~/.pgpass | cut -d: -f5 \
+        | clip.exe
+}
+
+snowsqlf()
+{
+    # run snowflake query from file and dump all the extra garbage
+    #   so output can be sent to file cleanly
+    # friendly=false -- turn off startup and exit messages
+    # timing=false -- don't output query time or number of records
+    # sed '/^$/d' -- remove empty lines
+    # sed '/^-- [^\t]*$/d' -- remove commented lines (without tabs)
+    snowsql \
+        -o friendly=false \
+        -o timing=false \
+        -o output_format=tsv \
+        -f $1 \
+        | sed '/^$/d' \
+        | sed '/^-- [^\t]*$/d'
+}
+
 # \u - username
 # \h - hostname up to first '.'
 # \H - full hostname

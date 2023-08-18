@@ -1,6 +1,7 @@
 [user]
     name = Ulysses Grundler
-    github = grundler
+    email = ulysses.grundler@tranetechnologies.com
+    github = ugrundler-tt
 [core]
     editor = vi
 [alias]
